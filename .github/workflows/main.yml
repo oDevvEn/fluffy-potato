@@ -5,9 +5,22 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+    - name: format commit msg
+      env:
+        RAW_MSG: ${{ github.event.head_commit.message }}
+      run: |
+        TITLE=$(echo "$RAW_MSG" | head -n 1)  
+        BODY=$(echo "$RAW_MSG" | tail -n +2 | sed -e '/./,$!d')
+        
+        if [ -z "$BODY" ]; then
+          echo "FORMATTED_MSG=**$TITLE**" >> $GITHUB_ENV
+        else
+          echo "FORMATTED_MSG=**$TITLE**\n$BODY" >> $GITHUB_ENV
+        fi
+        
     - name: Actions for Discord
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@0.4.0
       with:
-        args: "{{ EVENT_PAYLOAD.head_commit.message }}"
+        args: "{{ FORMATTED_MSG }}"
