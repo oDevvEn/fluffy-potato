@@ -1,0 +1,13 @@
+name = "MCA Reborn [Fabric/Forge]"
+filename = "mca-neoforge-7.7.7+1.21.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "4eeee7fb0e95e69f2f9453c00e1677d2daf36f87"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7930478
+project-id = 535291
