@@ -9,14 +9,16 @@ jobs:
       env:
         RAW_MSG: ${{ github.event.head_commit.message }}
       run: |
-        TITLE=$(echo "$RAW_MSG" | head -n 1)  
+        TITLE=$(echo "$RAW_MSG" | head -n 1)
         BODY=$(echo "$RAW_MSG" | tail -n +2 | sed -e '/./,$!d')
-        
+        EOF=$(dd if=/dev/urandom bs=15 count=1 2>/dev/null | base64 | tr -dc 'a-zA-Z0-9')
+        echo "FORMATTED_MSG<<$EOF" >> $GITHUB_ENV
         if [ -z "$BODY" ]; then
-          echo "FORMATTED_MSG=**$TITLE**" >> $GITHUB_ENV
+          echo "**$TITLE**" >> $GITHUB_ENV
         else
-          echo "FORMATTED_MSG=**$TITLE**\n$BODY" >> $GITHUB_ENV
+          echo -e "**$TITLE**\n$BODY" >> $GITHUB_ENV
         fi
+          echo "$EOF" >> $GITHUB_ENV
         
     - name: Actions for Discord
       env:
