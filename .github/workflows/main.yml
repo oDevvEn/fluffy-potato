@@ -8,7 +8,6 @@ jobs:
     - name: Actions for Discord
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        COMMIT_MSG: ${{ github.event.head_commit.message }}
       uses: Ilshidur/action-discord@0.4.0
       with:
-        args: "$COMMIT_MSG"
+        args: "{{ EVENT_PAYLOAD.head_commit.message }}"
